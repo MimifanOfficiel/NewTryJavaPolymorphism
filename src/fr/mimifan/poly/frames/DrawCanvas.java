@@ -29,6 +29,7 @@ public class DrawCanvas {
     public void load() {
         buildMainPanel();
 
+        frame.setLayout(null);
         frame.setResizable(false);
         frame.setContentPane(mainPanel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -45,6 +46,7 @@ public class DrawCanvas {
 
     private void buildMainPanel(){
         mainPanel.setLayout(null);
+        mainPanel.setOpaque(false);
         locationLabel.setBounds(10, HEIGHT-100, WIDTH/2, 20);
         currentColorLabel.setBounds(10, HEIGHT-80, WIDTH/2, 20);
 

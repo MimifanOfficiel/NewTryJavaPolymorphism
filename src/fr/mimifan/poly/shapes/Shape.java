@@ -19,6 +19,7 @@ public abstract class Shape extends JPanel {
         this.thickness = 2;
         this.filled = false;
         this.selected = false;
+        setOpaque(false);
     }
 
 
