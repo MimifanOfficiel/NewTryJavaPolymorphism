@@ -2,6 +2,7 @@ package fr.mimifan.poly.listeners;
 
 import fr.mimifan.poly.frames.DrawCanvas;
 import fr.mimifan.poly.shapes.Rectangle;
+import fr.mimifan.poly.shapes.Shape;
 import fr.mimifan.poly.utils.ColorUtils;
 
 import java.awt.*;
@@ -72,6 +73,18 @@ public class DrawCanvasKeyListener implements KeyListener {
                 case KeyEvent.VK_P:
                     if(DrawCanvas.getInstance().getCurrentSelectedShape() == null) return;
                     DrawCanvas.getInstance().getCurrentSelectedShape().setThickness(DrawCanvas.getInstance().getCurrentSelectedShape().getThickness()+1);
+                    DrawCanvas.getInstance().getCurrentSelectedShape().revalidate();
+                    break;
+                case KeyEvent.VK_L:
+                    if(DrawCanvas.getInstance().getShapes().isEmpty()) {
+                        System.out.println("No shapes on the canvas");
+                        break;
+                    }
+                    System.out.println("There " + (DrawCanvas.getInstance().getShapes().size() == 1 ? "is 1 shape" : "are " + DrawCanvas.getInstance().getShapes().size() + " shapes") + " on the canvas");
+                    for(Shape s : DrawCanvas.getInstance().getShapes()) {
+                        System.out.println(s);
+                    }
+                    break;
                 case KeyEvent.VK_Q:
                     System.exit(0);
                     break;

@@ -1,11 +1,12 @@
 package fr.mimifan.poly.shapes;
 
 import fr.mimifan.poly.frames.DrawCanvas;
+import fr.mimifan.poly.utils.ColorUtils;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class Shape extends JPanel {
+public abstract class Shape extends JPanel {
 
     private Anchor anchor;
     private Color color;
@@ -58,5 +59,19 @@ public class Shape extends JPanel {
 
     public void setThickness(int thickness) {
         this.thickness = thickness;
+        repaintShape();
     }
+
+    public void repaintShape(){
+        paintComponent(DrawCanvas.getInstance().getFrame().getGraphics());
+    }
+
+    public String getTypeName(){
+        return "unknown";
+    }
+
+    public String toString() {
+        return "Shape: Thickness: " + thickness + " Filled: " + filled + " Color: " + new ColorUtils().getColorNameFromColor(getColor()) + " ";
+    }
+
 }
