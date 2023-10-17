@@ -1,16 +1,15 @@
 package fr.mimifan.poly.listeners;
 
 import fr.mimifan.poly.frames.DrawCanvas;
+import fr.mimifan.poly.frames.DrawingWindow;
+import fr.mimifan.poly.frames.DrawingZone;
 import fr.mimifan.poly.shapes.Shape;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 
 public class ActionEvents implements ActionListener {
 
@@ -29,10 +28,10 @@ public class ActionEvents implements ActionListener {
 
             case "menu_save" -> {
                 File file = selectFile(); if(file == null) return;
-                PrintWriter writer;
+                ObjectOutputStream writer;
                 try {
-                    writer = new PrintWriter(new FileWriter(file), true);
-                    for (Shape shape : DrawCanvas.getInstance().getShapes()) writer.println(shape);
+                    writer = new ObjectOutputStream(new FileOutputStream(file));
+                    for (Shape shape : DrawingZone.getInstance().getShapes()) writer.writeObject(shape);
                     writer.close();
                 } catch (IOException exception) {
                     exception.printStackTrace();
@@ -42,16 +41,27 @@ public class ActionEvents implements ActionListener {
 
             case "menu_load" -> {
                 File file = selectFile(); if(file == null) return;
-
+                try {
+                    ObjectInputStream reader = new ObjectInputStream(new FileInputStream(file));
+                    for(;;) {
+                        try {
+                        Shape shape = (Shape) reader.readObject();
+                        DrawingZone.getInstance().getShapes().add(shape);
+                        } catch (EOFException ex) {return;}
+                        DrawingZone.getInstance().paint(DrawingZone.getInstance().getGraphics());
+                    }
+                } catch (IOException | ClassNotFoundException ex) {
+                    throw new RuntimeException("Error while loading shape file.");
+                }
             }
-
         }
     }
 
 
     private File selectFile(){
         JFileChooser selector = new JFileChooser();
-        selector.setFileFilter(new FileNameExtensionFilter("Text Files", "txt"));
+        selector.setCurrentDirectory(new File("./"));
+        selector.setFileFilter(new FileNameExtensionFilter("Shapes binary files", "sbf"));
         int result = selector.showOpenDialog(null);
         if(result != JFileChooser.APPROVE_OPTION) return null;
         return selector.getSelectedFile();

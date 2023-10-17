@@ -22,7 +22,7 @@ public class DrawingWindow extends JFrame {
         instance = this;
         setTitle("Polymorphisme en Java !");
         setLayout(null);
-        setResizable(false);
+        setResizable(true);
         setContentPane(new DrawingZone());
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -45,7 +45,7 @@ public class DrawingWindow extends JFrame {
 
         JMenuItem load = new JMenuItem("Charger");
         JMenuItem save = new JMenuItem("Sauvegarder");
-        JMenuItem quit =new JMenuItem("Quitter");
+        JMenuItem quit = new JMenuItem("Quitter");
 
 
         JMenuItem black = new JMenuItem("Noir");

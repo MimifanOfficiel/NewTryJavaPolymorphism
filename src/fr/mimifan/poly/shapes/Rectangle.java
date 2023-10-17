@@ -1,6 +1,5 @@
 package fr.mimifan.poly.shapes;
 
-import fr.mimifan.poly.dialogs.ShapeEditDialog;
 import fr.mimifan.poly.frames.DrawingZone;
 
 import javax.swing.*;
@@ -23,12 +22,12 @@ public class Rectangle extends Shape {
         Graphics2D g2d = (Graphics2D) g;
         g2d.setStroke(new BasicStroke(getThickness()));
         g.drawRect(getAnchor().getX(), getAnchor().getY(), width, height);
+        System.out.println(getAnchor().getX() + " " + getAnchor().getY() );
         getAnchor().draw(g, isSelected());
     }
 
     @Override
     public void edit() {
-        ShapeEditDialog editDialog = new ShapeEditDialog();
 
         JTextField widthField = new JTextField("Width");
         widthField.setText(String.valueOf(width));

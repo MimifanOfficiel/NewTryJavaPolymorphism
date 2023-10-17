@@ -17,6 +17,8 @@ public class DrawingZone extends JPanel {
 
     public DrawingZone() {
         instance = this;
+        setSize(DrawingWindow.WIDTH, DrawingWindow.HEIGHT);
+        setBounds(0, 0, getWidth(), getHeight());
     }
 
     @Override

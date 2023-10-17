@@ -1,11 +1,11 @@
 package fr.mimifan.poly.shapes;
 
-import fr.mimifan.poly.frames.DrawCanvas;
 import fr.mimifan.poly.frames.DrawingZone;
 
 import java.awt.*;
+import java.io.Serializable;
 
-public class Anchor {
+public class Anchor implements Serializable {
 
     private int x, y;
 
@@ -15,11 +15,13 @@ public class Anchor {
     }
 
     public void draw(Graphics g, boolean selected) {
-        if(!selected) g.setColor(Color.BLACK);
-        else g.setColor(Color.PINK);
-
-        if(!selected) g.drawRect(x-2, y-2, 4, 4);
-        else g.fillRect(x-2, y-2, 4, 4);
+        if(!selected) {
+            g.setColor(Color.BLACK);
+            g.drawRect(x-2, y-2, 4, 4);
+        } else {
+            g.setColor(Color.PINK);
+            g.fillRect(x-2, y-2, 4, 4);
+        }
     }
 
     public boolean isOver(int x, int y){

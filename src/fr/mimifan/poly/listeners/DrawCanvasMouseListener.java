@@ -15,12 +15,18 @@ public class DrawCanvasMouseListener implements MouseListener, MouseMotionListen
 
     @Override
     public void mouseClicked(MouseEvent e) {
+        boolean foundOne = false;
         for(Shape s : DrawingZone.getInstance().getShapes()){
             System.out.println(e.getX() + " " + e.getY() + " " + s.getAnchor());
             if(s.isOver(e.getX(), e.getY())){
                 DrawingZone.getInstance().setCurrentSelectedShape(s);
                 s.setSelected(true);
+                foundOne = true;
             }
+        }
+        if(!foundOne && DrawingZone.getInstance().getCurrentSelectedShape() != null) {
+            DrawingZone.getInstance().getCurrentSelectedShape().setSelected(false);
+            DrawingZone.getInstance().setCurrentSelectedShape(null);
         }
     }
 

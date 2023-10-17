@@ -5,8 +5,9 @@ import fr.mimifan.poly.frames.DrawingZone;
 import fr.mimifan.poly.utils.ColorUtils;
 
 import java.awt.*;
+import java.io.Serializable;
 
-public abstract class Shape {
+public abstract class Shape implements Serializable {
 
     private Anchor anchor;
     private Color color;
@@ -48,7 +49,7 @@ public abstract class Shape {
 
     public void setSelected(boolean selected) {
         this.selected = selected;
-        anchor.draw(DrawingZone.getInstance().getGraphics(), selected);
+        draw(DrawingZone.getInstance().getGraphics());
     }
 
     public void setThickness(int thickness) {
