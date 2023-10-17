@@ -1,12 +1,12 @@
 package fr.mimifan.poly.shapes;
 
 import fr.mimifan.poly.frames.DrawCanvas;
+import fr.mimifan.poly.frames.DrawingZone;
 import fr.mimifan.poly.utils.ColorUtils;
 
-import javax.swing.*;
 import java.awt.*;
 
-public abstract class Shape extends JPanel {
+public abstract class Shape {
 
     private Anchor anchor;
     private Color color;
@@ -15,22 +15,15 @@ public abstract class Shape extends JPanel {
 
     public Shape(int x, int y) {
         this.anchor = new Anchor(x, y);
-        this.color = DrawCanvas.getInstance().getCurrentColor();
-        this.thickness = 2;
+        this.color = DrawingZone.getInstance().getCurrentColor();
+        this.thickness = 1;
         this.filled = false;
         this.selected = false;
-        setOpaque(false);
     }
 
 
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        Graphics2D g2d = (Graphics2D) g;
-        g2d.setStroke(new BasicStroke(thickness));
-        g2d.setColor(color);
-        anchor.draw(g2d, selected);
-    }
+    abstract public void draw(Graphics g);
+    abstract public void edit();
 
     public boolean isOver(int x, int y){
         return anchor.isOver(x, y);
@@ -55,24 +48,23 @@ public abstract class Shape extends JPanel {
 
     public void setSelected(boolean selected) {
         this.selected = selected;
-        anchor.draw((Graphics2D) DrawCanvas.getInstance().getFrame().getGraphics(), selected);
+        anchor.draw(DrawingZone.getInstance().getGraphics(), selected);
     }
 
     public void setThickness(int thickness) {
         this.thickness = thickness;
-        repaintShape();
+        draw(DrawingZone.getInstance().getGraphics());
     }
 
-    public void repaintShape(){
-        paintComponent(DrawCanvas.getInstance().getFrame().getGraphics());
+    public void setColor(Color color) {
+        this.color = color;
+        draw(DrawingZone.getInstance().getGraphics());
     }
 
-    public String getTypeName(){
-        return "unknown";
-    }
+    public abstract String getTypeName();
 
     public String toString() {
-        return "Shape: Thickness: " + thickness + " Filled: " + filled + " Color: " + new ColorUtils().getColorNameFromColor(getColor()) + " ";
+        return "Shape: Anchor: " + anchor + " Thickness: " + thickness + " Filled: " + filled + " Color: " + new ColorUtils().getColorNameFromColor(getColor()) + " ";
     }
 
 }

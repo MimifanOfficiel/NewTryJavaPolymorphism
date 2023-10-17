@@ -1,10 +1,14 @@
 package fr.mimifan.poly.listeners;
 
 import fr.mimifan.poly.frames.DrawCanvas;
+import fr.mimifan.poly.frames.DrawingWindow;
+import fr.mimifan.poly.frames.DrawingZone;
+import fr.mimifan.poly.shapes.Circle;
 import fr.mimifan.poly.shapes.Rectangle;
 import fr.mimifan.poly.shapes.Shape;
 import fr.mimifan.poly.utils.ColorUtils;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -25,79 +29,89 @@ public class DrawCanvasKeyListener implements KeyListener {
             boolean colorKey = false;
             switch (keyCode) {
                 case KeyEvent.VK_0:
-                    DrawCanvas.getInstance().setCurrentColor(Color.BLACK);
+                    Color color = JColorChooser.showDialog(DrawingWindow.getInstance(), "Choisir une couleur", Color.BLACK);
+                    DrawingZone.getInstance().setCurrentColor(color);
                     colorKey=true;
                     break;
                 case KeyEvent.VK_1:
-                    DrawCanvas.getInstance().setCurrentColor(Color.BLUE);
+                    DrawingZone.getInstance().setCurrentColor(Color.BLUE);
                     colorKey=true;
                     break;
                 case KeyEvent.VK_2:
-                    DrawCanvas.getInstance().setCurrentColor(Color.GREEN);
+                    DrawingZone.getInstance().setCurrentColor(Color.GREEN);
                     colorKey=true;
                     break;
                 case KeyEvent.VK_3:
-                    DrawCanvas.getInstance().setCurrentColor(Color.CYAN);
+                    DrawingZone.getInstance().setCurrentColor(Color.CYAN);
                     colorKey=true;
                     break;
                 case KeyEvent.VK_4:
-                    DrawCanvas.getInstance().setCurrentColor(Color.RED);
+                    DrawingZone.getInstance().setCurrentColor(Color.RED);
                     colorKey=true;
                     break;
                 case KeyEvent.VK_5:
-                    DrawCanvas.getInstance().setCurrentColor(Color.MAGENTA);
+                    DrawingZone.getInstance().setCurrentColor(Color.MAGENTA);
                     colorKey=true;
                     break;
                 case KeyEvent.VK_6:
-                    DrawCanvas.getInstance().setCurrentColor(Color.YELLOW);
+                    DrawingZone.getInstance().setCurrentColor(Color.YELLOW);
                     colorKey=true;
                     break;
                 case KeyEvent.VK_7:
-                    DrawCanvas.getInstance().setCurrentColor(Color.LIGHT_GRAY);
+                    DrawingZone.getInstance().setCurrentColor(Color.LIGHT_GRAY);
                     colorKey=true;
                     break;
                 case KeyEvent.VK_8:
-                    DrawCanvas.getInstance().setCurrentColor(Color.GRAY);
+                    DrawingZone.getInstance().setCurrentColor(Color.GRAY);
                     colorKey=true;
                     break;
                 case KeyEvent.VK_9:
-                    DrawCanvas.getInstance().setCurrentColor(Color.WHITE);
+                    DrawingZone.getInstance().setCurrentColor(Color.WHITE);
                     colorKey=true;
                     break;
                 case KeyEvent.VK_R:
-                    Rectangle rec = new Rectangle(DrawCanvas.getInstance().getFrame().getWidth() / 2,
-                            DrawCanvas.getInstance().getFrame().getHeight() / 2, 50, 50);
-                    DrawCanvas.getInstance().getMainPanel().add(rec);
-                    DrawCanvas.getInstance().getShapes().add(rec);
+                    Rectangle rec = new Rectangle(DrawingWindow.WIDTH / 2,
+                            DrawingWindow.HEIGHT / 2, 50, 50);
+                    DrawingZone.getInstance().addShape(rec);
+                    break;
+                case KeyEvent.VK_C:
+                    Circle circle = new Circle(DrawingWindow.WIDTH / 2,
+                                               DrawingWindow.HEIGHT / 2);
+                    DrawingZone.getInstance().addShape(circle);
                     break;
                 case KeyEvent.VK_P:
-                    if(DrawCanvas.getInstance().getCurrentSelectedShape() == null) return;
-                    DrawCanvas.getInstance().getCurrentSelectedShape().setThickness(DrawCanvas.getInstance().getCurrentSelectedShape().getThickness()+1);
-                    DrawCanvas.getInstance().getCurrentSelectedShape().revalidate();
-                    break;
+                    if(DrawingZone.getInstance().getCurrentSelectedShape() == null) return;
+                    DrawingZone.getInstance().getCurrentSelectedShape().setThickness(DrawingZone.getInstance().getCurrentSelectedShape().getThickness()+1);break;
                 case KeyEvent.VK_L:
-                    if(DrawCanvas.getInstance().getShapes().isEmpty()) {
+                    if(DrawingZone.getInstance().getShapes().isEmpty()) {
                         System.out.println("No shapes on the canvas");
                         break;
                     }
-                    System.out.println("There " + (DrawCanvas.getInstance().getShapes().size() == 1 ? "is 1 shape" : "are " + DrawCanvas.getInstance().getShapes().size() + " shapes") + " on the canvas");
-                    for(Shape s : DrawCanvas.getInstance().getShapes()) {
-                        System.out.println(s);
-                    }
+                    System.out.println("There " + (DrawingZone.getInstance().getShapes().size() == 1 ? "is 1 shape" : "are " + DrawingZone.getInstance().getShapes().size() + " shapes") + " on the canvas");
+                    for(Shape s : DrawingZone.getInstance().getShapes()) System.out.println(s);
+                    break;
+
+                case KeyEvent.VK_M:
+                     if(DrawingZone.getInstance().getCurrentSelectedShape() == null) return;
+                     DrawingZone.getInstance().getCurrentSelectedShape().edit();
                     break;
                 case KeyEvent.VK_Q:
                     System.exit(0);
                     break;
 
             }
-            if(colorKey) updateColorLabel();
+            if(colorKey) {
+                updateColorLabel();
+                if(DrawingZone.getInstance().getCurrentSelectedShape() == null) return;
+                DrawingZone.getInstance().getCurrentSelectedShape().setColor(DrawingZone.getInstance().getCurrentColor());
+            }
             keysPressed[keyCode] = true;
         }
     }
 
     public void updateColorLabel(){
-        DrawCanvas.getInstance().getCurrentColorLabel().setText("Selected color: " +
-                new ColorUtils().getColorNameFromColor(DrawCanvas.getInstance().getCurrentColor()));
+        DrawingWindow.getInstance().getCurrentColorLabel().setText("Selected color: " +
+                new ColorUtils().getColorNameFromColor(DrawingZone.getInstance().getCurrentColor()));
     }
 
     @Override

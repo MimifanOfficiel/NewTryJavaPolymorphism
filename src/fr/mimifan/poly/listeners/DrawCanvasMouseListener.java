@@ -1,6 +1,8 @@
 package fr.mimifan.poly.listeners;
 
 import fr.mimifan.poly.frames.DrawCanvas;
+import fr.mimifan.poly.frames.DrawingWindow;
+import fr.mimifan.poly.frames.DrawingZone;
 import fr.mimifan.poly.shapes.Shape;
 
 import java.awt.event.MouseEvent;
@@ -11,12 +13,12 @@ public class DrawCanvasMouseListener implements MouseListener, MouseMotionListen
 
     private int startX, startY;
 
-
     @Override
     public void mouseClicked(MouseEvent e) {
-        for(Shape s : DrawCanvas.getInstance().getShapes()){
+        for(Shape s : DrawingZone.getInstance().getShapes()){
+            System.out.println(e.getX() + " " + e.getY() + " " + s.getAnchor());
             if(s.isOver(e.getX(), e.getY())){
-                DrawCanvas.getInstance().setCurrentSelectedShape(s);
+                DrawingZone.getInstance().setCurrentSelectedShape(s);
                 s.setSelected(true);
             }
         }
@@ -24,7 +26,7 @@ public class DrawCanvasMouseListener implements MouseListener, MouseMotionListen
 
     @Override
     public void mousePressed(MouseEvent e) {
-        if(DrawCanvas.getInstance().getCurrentSelectedShape()== null) return;
+        if(DrawingZone.getInstance().getCurrentSelectedShape() == null) return;
 
         startX = e.getX();
         startY = e.getY();
@@ -33,20 +35,12 @@ public class DrawCanvasMouseListener implements MouseListener, MouseMotionListen
 
     @Override
     public void mouseDragged(MouseEvent e) {
-        if(DrawCanvas.getInstance().getCurrentSelectedShape() == null) return;
+        if(DrawingZone.getInstance().getCurrentSelectedShape() == null) return;
 
         int deltaX = e.getX() - startX;
         int deltaY = e.getY() - startY;
 
-        DrawCanvas.getInstance().getCurrentSelectedShape().getAnchor().setXY(deltaX, deltaY);
-        DrawCanvas.getInstance().getCurrentSelectedShape().setLocation(deltaX, deltaY);
-
-        DrawCanvas.getInstance().getFrame().revalidate();
-        DrawCanvas.getInstance().getFrame().repaint();
-
-        DrawCanvas.getInstance().getMainPanel().revalidate();
-        DrawCanvas.getInstance().getMainPanel().repaint();
-        //DrawCanvas.getInstance().getCurrentSelectedShape().repaintShape();
+        DrawingZone.getInstance().getCurrentSelectedShape().getAnchor().setXY(deltaX, deltaY);
     }
 
     @Override
