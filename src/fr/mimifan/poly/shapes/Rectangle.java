@@ -19,7 +19,7 @@ public class Rectangle extends Shape {
 
     @Override
     public void draw(Graphics g) {
-        g.setColor(DrawingZone.getInstance().getCurrentColor());
+        g.setColor(getColor());
         Graphics2D g2d = (Graphics2D) g;
         g2d.setStroke(new BasicStroke(getThickness()));
         g.drawRect(getAnchor().getX(), getAnchor().getY(), width, height);
@@ -39,29 +39,30 @@ public class Rectangle extends Shape {
         JTextField thicknessField = new JTextField("Thickness");
         thicknessField.setText(String.valueOf(getThickness()));
 
-        editDialog.addComponent(new JLabel("Width"), widthField, new JLabel("Height"), heightField, new JLabel("Thickness"), thicknessField);
+        JLabel colorLabel = new JLabel("Color");
+        JColorChooser colorChooser = new JColorChooser();
 
-        if(editDialog.show() != 0) return;
-        for (JComponent field : editDialog.getFields()) {
-            if(field instanceof JLabel) return;
-            if(field instanceof JTextField) System.out.println( ((JTextField) field).getText());
-        }
+        final JComponent[] shape_infos = new JComponent[] {
+                widthField,
+                heightField,
+                thicknessField,
+                colorLabel,
+                colorChooser
+        };
 
-
-        /*int result = JOptionPane.showConfirmDialog(null, shape_infos, "Edit shape", JOptionPane.PLAIN_MESSAGE);
+        int result = JOptionPane.showConfirmDialog(null, shape_infos, "Edit shape", JOptionPane.OK_CANCEL_OPTION);
         if (result == JOptionPane.OK_OPTION) {
             try {
-                width = Integer.valueOf(_width.getText());
-                height = Integer.valueOf(_height.getText());
-                setThickness(Integer.valueOf(_thickness.getText()));
+                width = Integer.parseInt(widthField.getText());
+                height = Integer.parseInt(heightField.getText());
+                setThickness(Integer.parseInt(thicknessField.getText()));
+                setColor(colorChooser.getColor());
                 DrawingZone.getInstance().paint(DrawingZone.getInstance().getGraphics());
-            } catch (NumberFormatException e){
-                e.printStackTrace();
-            }
+            } catch (Exception ignored) {}
 
         } else {
             System.out.println("User canceled / closed the dialog, result = " + result);
-        }*/
+        }
     }
 
     @Override

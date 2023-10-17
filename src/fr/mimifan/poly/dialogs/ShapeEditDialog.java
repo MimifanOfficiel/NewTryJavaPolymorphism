@@ -1,10 +1,8 @@
 package fr.mimifan.poly.dialogs;
 
-import fr.mimifan.poly.frames.DrawingWindow;
-
 import javax.swing.*;
-import java.awt.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ShapeEditDialog {
@@ -35,10 +33,8 @@ public class ShapeEditDialog {
         this.messageType = messageType;
     }
 
-    public void addComponent(JComponent... component) {
-        for (JComponent jComponents : component) {
-            fields.add(jComponents);
-        }
+    public void addComponent(JComponent component) {
+        fields.add(component);
     }
 
     public void addMessageText(String messageText) {
